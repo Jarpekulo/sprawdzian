@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wielokrotny formularz</title>
+    <style>
+        .Card
+        {
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 1rem;
+            max-width: 300px;
+            margin: 200px auto;
+            display: none;
+        }
+        .Card.active
+        {
+            display: grid;
+        }
+        label 
+        {
+            font-weight: bold;
+            margin-bottom: .25rem;
+        }
+        input
+        {
+            font-size: 1.2rem;
+        }
+        button
+        {
+            padding: .5rem;
+            border: 1px solid #333;
+            cursor: pointer;
+            margin-top: .6em;
+            transition: 1s;
+        }
+        button:hover
+        {
+            background-color: rgb(215, 212, 212);
+        }
+    </style>
+</head>
+<body>
+    <form class="Wielokrotny-Formularz">
+        <div class="Card">
+            <label for="email">E-mail</label>
+            <input name="email" type="email" required>
+            <label for="haslo">Haslo</label>
+            <input type='password' name="haslo" class="haslo" minlength="10" required>
+            <button type='button'class="next">Następny</button>
+        </div>
+        <div class="Card">
+            <label for="miasto">Miasto</label>
+            <input name="miasto" type="text" required>
+            <label for="phone">nr Telefonu</label>
+            <input type='tel'name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}" required>
+            <label for="stanowisko">Stanowisko pracy</label>
+            <input name="stanowisko" >
+            <button type='button' class="next">Następny</button>
+            <button type='button'class="prev">Poprzedni</button>
+        </div>
+        <div class="Card">
+            <label for="Imie">Imię</label>
+            <input name="Imie" type="text" required>
+            <label for="Nazwisko">Nazwisko</label>
+            <input name="Nazwisko" type="text" required>
+            <button type='button' class="prev">Poprzedni</button>
+            <button type='submit' class="submit">Zakończ</button>
+        </div> 
+    </form>
+    <script>
+        function Wyswietl()
+        {
+            cards.forEach((krok,index)=>{
+                krok.classList.toggle('active',index === obecny)
+            })
+        }
+        const form = document.querySelector('.Wielokrotny-Formularz')
+        const cards = [...document.querySelectorAll('.Card')]
+        const haslo = document.querySelector('.haslo')
+        let obecny = cards.findIndex(krok =>{
+            return krok.classList.contains('active')
+        })
+        if(obecny < 0)
+        {
+            obecny = 0;
+            Wyswietl()
+        }
+        form.addEventListener('click',event=>{  
+            if(event.target.matches('.next'))
+            {
+                const inputs = [...cards[obecny].querySelectorAll('input')]
+                const valid = inputs.every(input=>input.reportValidity())
+                if(valid)
+                obecny +=1
+            }
+            else if(event.target.matches('.prev'))
+            obecny -=1
+                Wyswietl()
+        })
+    </script>
+</body>
+</html>

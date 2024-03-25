@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamiczne Dodawanie Pól</title>
+    <style>
+        .content,.Dodawany
+        {
+            display: grid;
+            max-width: 300px;   
+            gap:.5rem;
+            margin: 0 auto; 
+        }
+        .nazwa_nowego,.button
+        {
+            padding:.5rem;
+        }
+        .button
+        {
+            cursor: pointer;
+            border: 1px solid #333;
+            background-color: lime;
+            color:white;
+            font-weight: bold;
+            transition: 1s;
+        }
+        .button:hover
+        {
+            background-color: rgb(57, 226, 57);
+            color:#dddada;
+        }
+    </style>
+</head>
+<body>
+    <main class="content">
+        <form class="Dodawany">
+        </form>
+        <input class="nazwa" placeholder="Podaj nazwę nowego pola">
+        <select class="input-type" selected="Wybierz typ pola">
+            <option>--Wybierz typ pola--</option>
+            <option>Text</option>   
+            <option>Number</option>
+            <option>Date</option>
+            <option>File</option>
+            <option>Color</option>   
+        </select>
+        <button class="button" type="button">Dodaj Pole</button>
+    </main>
+    <script>
+        const form = document.querySelector('.Dodawany')
+        const nazwa = document.querySelector('.nazwa')
+        const btn_add = document.querySelector('.button')
+        const type = document.querySelector('.input-type')
+        btn_add.addEventListener('click',event=>{
+            if(nazwa.value != '')
+            {
+                const label = document.createElement("label")
+                label.textContent = nazwa.value
+                label.htmlFor = nazwa.value
+                const input = document.createElement("input")
+                input.name = nazwa.value
+                let option = type.options[type.selectedIndex].text
+                if(type.selectedIndex == 0)
+                    alert('wybierz typ pola!')
+                else
+                {
+                    input.type = option
+                    input.classList.add(nazwa.value)
+                    form.append(label)
+                    form.append(input)
+                }
+            }
+            else
+            alert('Nie możesz dodać pustego pola')
+        })
+    </script>
+</body>
+</html>

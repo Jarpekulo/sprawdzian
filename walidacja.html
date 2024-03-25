@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walidacja formularza</title>
+    <style>
+        .Card
+        {
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 1rem;
+            max-width: 300px;
+            margin: 200px auto;
+            display: grid;
+        }
+        label 
+        {
+            font-weight: bold;
+            margin-bottom: .25rem;
+        }
+        input
+        {
+            font-size: 1.2rem;
+        }
+        button
+        {
+            padding: .5rem;
+            border: 1px solid #333;
+            cursor: pointer;
+            margin-top: .6em;
+            transition: 1s;
+        }
+        button:hover
+        {
+            background-color: rgb(215, 212, 212);
+        }
+        .error
+        {
+            color:red;
+            animation: todown 1s ease-in-out forwards;
+            display: none;
+        }
+        .wiadomosc
+        {
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+    <form class="form">
+        <div class="Card">
+            <label for="osoba">Imię i Nazwisko</label>
+            <input class='osoba'name="osoba">
+            <div class="error"></div>
+            <label for="email">E-mail</label>
+            <input class='email'name="email">
+            <div class="error"></div>
+            <label for="haslo">Haslo</label>
+            <input class='password'type='password' name="haslo">
+            <div class="error"></div>
+            <label for="phone">Telefon</label>
+            <input class='telefon'name="phone">
+            <div class="error"></div>
+            <label for="wiadomosc">Wiadomość</label>
+            <textarea class='wiadomosc'name="wiadomosc"></textarea>
+            <div class="error"></div>
+            <button type='submit'class="send">Wyslij</button>
+            <div class="error"></div>
+        </div>
+    </form>
+    <script>
+        const osoba = document.querySelector('.osoba')
+        const email = document.querySelector('.email')
+        const password = document.querySelector('.password')
+        const telefon = document.querySelector('.telefon')
+        const wiadomosc = document.querySelector('.wiadomosc')
+        const errors = [...document.querySelectorAll('.error')]
+        const form = document.querySelector('.form')
+        let error
+        osoba.addEventListener('input',event=>{
+            if(!(osoba.value.match(/[A-Z,a-z]\s[A-Z,a-z]/g)))
+            {
+                errors[0].style.display = 'grid'
+                errors[0].textContent = 'Podaj poprawnę Imie i Nazwisko'
+                osoba.style.backgroundColor = 'white'
+                error = 1
+            }
+            else
+            {
+                errors[0].style.display = 'none'
+                osoba.style.backgroundColor = 'lime'
+                error = 0
+            }
+        })
+        email.addEventListener('input',event=>{
+            if(!(email.value.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)))
+            {
+                errors[1].style.display = 'grid'
+                email.style.backgroundColor = 'white'
+                errors[1].textContent = 'Podaj poprawny e-mail'
+                error = 1
+            }
+            else
+            {
+                errors[1].style.display = 'none'
+                email.style.backgroundColor = 'lime'
+                error = 0
+            }
+        })
+        password.addEventListener('input',event=>{
+            let specials = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+            if(!(password.value.length>10 && password.value.match(specials)))
+            {
+                errors[2].style.display = 'grid'
+                brakujace = 10 - password.value.length
+                password.style.backgroundColor = 'white'
+                errors[2].textContent = 'Hasło musi być dłuszę niż 10 znaków i zawierać jeden znak specialny!'
+                error = 1
+            }
+            else
+            {
+                errors[2].style.display = 'none'
+                password.style.backgroundColor = 'lime'
+                error = 0
+            }
+        })
+        telefon.addEventListener('input',event=>{
+            if(!(telefon.value.match(/[0-9]{3}\-[0-9]{3}\-[0-9]{3}/)))
+            {
+                errors[3].style.display = 'grid'
+                telefon.style.backgroundColor = 'white'
+                errors[3].textContent = 'Poprawny format to np. 111-111-111'
+                error = 1
+            }
+            else
+            {
+                errors[3].style.display = 'none'
+                telefon.style.backgroundColor = 'lime'
+                error = 0
+            }
+        })
+        wiadomosc.addEventListener('input',event=>{
+            if(wiadomosc.value.length<30)
+            {
+                errors[4].style.display = 'grid'
+                brakujace = 30 - wiadomosc.value.length
+                wiadomosc.style.backgroundColor = 'white'
+                errors[4].textContent = 'Wiadomosc musi być dłusza niż 30 znaków! Jeszcze brakuje: '+brakujace
+                error = 1  
+            }
+            else
+            {
+                errors[4].style.display = 'none'
+                wiadomosc.style.backgroundColor = 'lime'
+                error = 0
+            }
+        })
+        form.addEventListener('submit',event=>{
+            if(error || osoba.value == '' || email.value == '' || password.value == '' || telefon.value == '' || wiadomosc.value == '')
+            {
+                alert('zle wypelnienie danych')
+                event.preventDefault();
+            }
+        })
+    </script>
+</body>
+</html>
